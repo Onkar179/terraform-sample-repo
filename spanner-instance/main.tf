@@ -4,6 +4,11 @@ variable "enable_soar" {
   description = "description"
 }
 
+provider "aws" {
+  region     = "us-west-2"
+  access_key = "my-access-key"
+  secret_key = "my-secret-key"
+}
 
 module "cloud_spanner" {
   source = "../modules/spanner-instance"
