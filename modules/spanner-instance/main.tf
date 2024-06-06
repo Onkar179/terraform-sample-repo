@@ -45,4 +45,5 @@ resource "google_spanner_instance_iam_member" "instance" {
   project = var.project_id
   role    = element(split("=>", each.key), 1)
   member  = element(split("=>", each.key), 0)
+
 }
