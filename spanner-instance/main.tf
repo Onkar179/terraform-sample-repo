@@ -21,5 +21,4 @@ module "cloud_spanner" {
   instance_size = each.value.instance_size
   region = each.value.instance_config
   instance_labels = each.value.instance_labels
-  password = "123"
 }
