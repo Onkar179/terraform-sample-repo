@@ -10,3 +10,4 @@ module "cloud_spanner" {
   region = each.value.instance_config
   instance_labels = each.value.instance_labels
 }
+
