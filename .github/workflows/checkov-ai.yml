@@ -1,0 +1,82 @@
+name: Checkov and OpenAI Integration
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  checkov_openai:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'
+
+      - name: Install Checkov
+        run: |
+          pip install checkov
+
+      - name: Run Checkov
+        run: |
+          checkov -f main.tf -o json > checkov_output.json
+
+      - name: Process Checkov Output
+        id: process_checkov
+        run: |
+          cat checkov_output.json
+
+      - name: Install jq
+        run: sudo apt-get install jq
+
+      - name: Extract Checkov Findings
+        id: extract_findings
+        run: |
+          findings=$(jq -c '.results.failed_checks[]' checkov_output.json)
+          echo "::set-output name=findings::$findings"
+
+      - name: Call OpenAI API
+        id: openai
+        run: |
+          findings=$(echo "${{ steps.extract_findings.outputs.findings }}")
+          echo "$findings" | jq -c '.' | while read finding; do
+            resource=$(echo "$finding" | jq -r '.resource')
+            issue=$(echo "$finding" | jq -r '.check_name')
+            description=$(echo "$finding" | jq -r '.check_result.description')
+            guideline=$(echo "$finding" | jq -r '.guideline // "No specific guideline provided"')
+            prompt=$(cat << EOF
+            Resource: $resource
+            Issue: $issue
+            Description: $description
+            Guideline: $guideline
+
+            Provide a detailed guideline for fixing this issue, including best practices, potential risks, and example code snippets if applicable.
+            EOF
+            )
+            response=$(curl https://api.openai.com/v1/completions \
+              -H "Content-Type: application/json" \
+              -H "Authorization: Bearer ${{ secrets.OPENAI_API_KEY }}" \
+              -d '{
+                "model": "text-davinci-003",
+                "prompt": "'"$prompt"'",
+                "max_tokens": 300,
+                "temperature": 0.7
+              }')
+            enhanced_guideline=$(echo "$response" | jq -r '.choices[0].text')
+            echo "Resource: $resource"
+            echo "Issue: $issue"
+            echo "Enhanced Guideline: $enhanced_guideline"
+          done
+
+      - name: Upload Checkov Output
+        uses: actions/upload-artifact@v2
+        with:
+          name: checkov-output
+          path: checkov_output.json
