@@ -1,0 +1,17 @@
+name: Slack Notification
+
+on:
+  push:
+    branches:
+      - main  # Change this to your desired branch
+
+jobs:
+  slack_notification:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send Slack Notification
+        uses: rtCamp/action-slack-notify@v2
+        with:
+          slack_webhook: ${{ secrets.slack_webhook_url }}
+          slack_message: "New commit pushed to main branch!"
+          slack_channel: "hackathon-test"
