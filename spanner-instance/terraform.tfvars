@@ -25,5 +25,8 @@ test-instance = {
    instance_labels = {
      "env" = "prod"
    }
+  instance_iam = [
+     "user:dibanyshu.rai@forescout.com=>roles/spanner.databaseAdmin"
+  ]
  }
 }
