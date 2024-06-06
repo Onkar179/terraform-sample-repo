@@ -15,7 +15,7 @@ test-instance = {
   ]
 }
 test-instance-2 = {
-  project_id  = "onkar-17-cloud"
+  project_id  = "cysiv-dev-onkarn""
   instance_display_name = "Spanner Prod"
   create_instance = true
   instance_size = {
