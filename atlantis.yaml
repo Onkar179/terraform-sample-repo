@@ -1,6 +1,7 @@
 version: 3
 projects:
 - dir: spanner-instance
+  repo_locking: false
   autoplan:
     when_modified: ["*.tf"]
     enabled: true
