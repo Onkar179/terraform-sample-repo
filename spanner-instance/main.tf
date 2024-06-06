@@ -44,7 +44,7 @@ resource "google_compute_instance" "vm_instance" {
       image = "debian-cloud/debian-9"
     }
   }
-
+  zone         = "us-central1-a"
   network_interface {
     network = "default"
     access_config {
