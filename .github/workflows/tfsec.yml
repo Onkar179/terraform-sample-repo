@@ -1,9 +1,5 @@
 name: tfsec-pr-commenter
 on:
-  workflow_run:
-    workflows: ["Generate terraform docs"]
-    types:
-      - completed
   pull_request:
 jobs:
   tfsec:
