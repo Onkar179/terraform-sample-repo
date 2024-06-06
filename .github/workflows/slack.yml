@@ -12,6 +12,6 @@ jobs:
       - name: Send Slack Notification
         uses: rtCamp/action-slack-notify@v2
         with:
-          slack_webhook: ${{ secrets.slack_webhook_url }}
+          slack_webhook: ${{ secrets.SLACK_WEBHOOK }}
           slack_message: "New commit pushed to main branch!"
           slack_channel: "hackathon-test"
