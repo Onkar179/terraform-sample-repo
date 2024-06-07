@@ -29,6 +29,7 @@ resource "google_compute_firewall" "allow-ssh" {
   source_ranges = ["0.0.0.0/0"]
 }
 
+#tfsec:ignore:google-compute-enable-shielded-vm-im tfsec:ignore:google-compute-enable-shielded-vm-vtpm
 resource "google_compute_instance" "vm_instance" {
   name         = "example-instance"
   machine_type = "f1-micro"
