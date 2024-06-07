@@ -19,7 +19,7 @@ test-instance-2 = {
   instance_display_name = "Spanner Prod"
   create_instance = true
   instance_size = {
-    processing_units = 200
+    processing_units = 300
   }
   instance_config = "regional-us-east4"
   instance_labels = {
