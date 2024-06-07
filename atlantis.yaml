@@ -1,0 +1,6 @@
+version: 3
+projects:
+- dir: spanner-instance
+  autoplan:
+    when_modified: ["*.tf", "*.tfvars"]
+    enabled: true
