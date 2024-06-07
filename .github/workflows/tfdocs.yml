@@ -1,7 +1,11 @@
 name: Generate terraform docs
 on:
   - pull_request
-
+    paths:
+      - 'spanner-instance/*.tf'
+      - 'spanner-instance/*.tfvars'
+    paths-ignore:
+      - 'README.md'
 jobs:
   docs:
     runs-on: ubuntu-latest
